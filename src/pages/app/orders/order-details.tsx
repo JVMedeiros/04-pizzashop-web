@@ -49,10 +49,14 @@ export function OrderDetails() {
 
             <TableRow>
               <TableCell className="text-muted-foreground">Email</TableCell>
-              <TableCell className="flex justify-end">jv.medeiros.gallina@gmail.com</TableCell>
+              <TableCell className="flex justify-end">
+                jv.medeiros.gallina@gmail.com
+              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="text-muted-foreground">Realizado há</TableCell>
+              <TableCell className="text-muted-foreground">
+                Realizado há
+              </TableCell>
               <TableCell className="flex justify-end">15 minutos</TableCell>
             </TableRow>
           </TableBody>
@@ -62,30 +66,32 @@ export function OrderDetails() {
           <TableHeader>
             <TableRow>
               <TableHead>Produto</TableHead>
-              <TableHead className='text-right'>Qtd.</TableHead>
-              <TableHead className='text-right'>Preço</TableHead>
-              <TableHead className='text-right'>Subtotal</TableHead>
+              <TableHead className="text-right">Qtd.</TableHead>
+              <TableHead className="text-right">Preço</TableHead>
+              <TableHead className="text-right">Subtotal</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
               <TableCell>Pizza Pepperoni família</TableCell>
-              <TableCell className='text-right'>2</TableCell>
-              <TableCell className='text-right'>R$ 139,90</TableCell>
-              <TableCell className='text-right'>R$ 279,80</TableCell>
+              <TableCell className="text-right">2</TableCell>
+              <TableCell className="text-right">R$ 139,90</TableCell>
+              <TableCell className="text-right">R$ 279,80</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Pizza Calafrango família</TableCell>
-              <TableCell className='text-right'>1</TableCell>
-              <TableCell className='text-right'>R$ 119,90</TableCell>
-              <TableCell className='text-right'>R$ 119,90</TableCell>
+              <TableCell className="text-right">1</TableCell>
+              <TableCell className="text-right">R$ 119,90</TableCell>
+              <TableCell className="text-right">R$ 119,90</TableCell>
             </TableRow>
           </TableBody>
 
           <TableFooter>
             <TableRow>
               <TableCell colSpan={3}>Total do pedido</TableCell>
-              <TableCell className='text-right font-medium'>R$ 399,60</TableCell>
+              <TableCell className="text-right font-medium">
+                R$ 399,60
+              </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
