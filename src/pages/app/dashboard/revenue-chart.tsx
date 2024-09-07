@@ -1,3 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
+import { subDays } from 'date-fns'
+import { useMemo, useState } from 'react'
+import { DateRange } from 'react-day-picker'
 import {
   CartesianGrid,
   Line,
@@ -8,6 +12,7 @@ import {
 } from 'recharts'
 import colors from 'tailwindcss/colors'
 
+import { getDailyRevenueInPeriod } from '@/api/get-daily-revenue-in-period'
 import {
   Card,
   CardContent,
@@ -15,33 +20,29 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useQuery } from '@tanstack/react-query'
-import { getDailyRevenueInPeriod } from '@/api/get-daily-revenue-in-period'
-import { Label } from '@/components/ui/label'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
-import { useMemo, useState } from 'react'
-import { DateRange } from 'react-day-picker'
-import { subDays } from 'date-fns'
+import { Label } from '@/components/ui/label'
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
-    to: new Date()
+    to: new Date(),
   })
 
-  const { data: dailyRevenueInPeriod} = useQuery({
-    queryFn: () => getDailyRevenueInPeriod({
-      from: dateRange?.from,
-      to: dateRange?.to
-    }),
-    queryKey: ['metrics', 'daily-revenue-in-period', dateRange]
+  const { data: dailyRevenueInPeriod } = useQuery({
+    queryFn: () =>
+      getDailyRevenueInPeriod({
+        from: dateRange?.from,
+        to: dateRange?.to,
+      }),
+    queryKey: ['metrics', 'daily-revenue-in-period', dateRange],
   })
 
   const chartData = useMemo(() => {
-    return dailyRevenueInPeriod?.map(chartItem => {
+    return dailyRevenueInPeriod?.map((chartItem) => {
       return {
         date: chartItem.date,
-        receipt: chartItem.receipt / 100
+        receipt: chartItem.receipt / 100,
       }
     })
   }, [dailyRevenueInPeriod])
@@ -56,9 +57,9 @@ export function RevenueChart() {
           <CardDescription>Receita diária no período</CardDescription>
         </div>
 
-        <div className='flex items-center gap-3'>
+        <div className="flex items-center gap-3">
           <Label>Período</Label>
-          <DateRangePicker date={dateRange} onDateChange={setDateRange }/>
+          <DateRangePicker date={dateRange} onDateChange={setDateRange} />
         </div>
       </CardHeader>
       <CardContent>
