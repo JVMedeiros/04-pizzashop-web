@@ -1,10 +1,13 @@
-
-export type OrderStatus = "pending" | "canceled" | "processing" | "delivering" | "delivered"
+export type OrderStatus =
+  | 'pending'
+  | 'canceled'
+  | 'processing'
+  | 'delivering'
+  | 'delivered'
 
 interface OrderStatusProps {
   status: OrderStatus
 }
-
 
 const orderStatusMap: Record<OrderStatus, string> = {
   pending: 'Pendente',
@@ -14,7 +17,7 @@ const orderStatusMap: Record<OrderStatus, string> = {
   processing: 'Em preparo',
 }
 
-export function OrderStatus({status}: OrderStatusProps) {
+export function OrderStatus({ status }: OrderStatusProps) {
   return (
     <div className="flex items-center gap-2">
       {status === 'pending' && (
@@ -33,7 +36,9 @@ export function OrderStatus({status}: OrderStatusProps) {
         <span className="h-2 w-2 rounded-full bg-amber-500" />
       )}
 
-      <span className="font-medium text-muted-foreground">{orderStatusMap[status]}</span>
+      <span className="font-medium text-muted-foreground">
+        {orderStatusMap[status]}
+      </span>
     </div>
   )
 }
