@@ -1,22 +1,10 @@
-import {
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-} from 'recharts'
+import { useQuery } from '@tanstack/react-query'
+import { BarChart } from 'lucide-react'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { BarChart } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
 import { getPopularProducts } from '@/api/get-popular-products'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const COLORS = [
   colors.sky[500],
@@ -26,11 +14,10 @@ const COLORS = [
   colors.rose[500],
 ]
 
-
 export function PopularProductsChart() {
   const { data: popularProducts } = useQuery({
     queryFn: getPopularProducts,
-    queryKey: ['metrics', 'popular-products']
+    queryKey: ['metrics', 'popular-products'],
   })
   return (
     <Card className="col-span-3">
@@ -39,20 +26,20 @@ export function PopularProductsChart() {
           <CardTitle className="text-base font-medium">
             Produtos populares
           </CardTitle>
-          <BarChart className='w-4 h-4 text-muted-foreground'/>
+          <BarChart className="h-4 w-4 text-muted-foreground" />
         </div>
       </CardHeader>
       <CardContent>
         {popularProducts && (
           <ResponsiveContainer width="100%" height={240}>
             <PieChart style={{ fontSize: 12 }}>
-              <Pie 
-                data={popularProducts} 
-                dataKey="amount" 
-                nameKey="product" 
-                cx="50%" 
-                cy="50%" 
-                outerRadius={86} 
+              <Pie
+                data={popularProducts}
+                dataKey="amount"
+                nameKey="product"
+                cx="50%"
+                cy="50%"
+                outerRadius={86}
                 innerRadius={64}
                 strokeWidth={8}
                 labelLine={false}
@@ -69,7 +56,7 @@ export function PopularProductsChart() {
                   const radius = 12 + innerRadius + (outerRadius - innerRadius)
                   const x = cx + radius * Math.cos(-midAngle * RADIAN)
                   const y = cy + radius * Math.sin(-midAngle * RADIAN)
-                
+
                   return (
                     <text
                       x={x}
@@ -79,7 +66,9 @@ export function PopularProductsChart() {
                       dominantBaseline="central"
                     >
                       {popularProducts[index].product.length > 12
-                        ? popularProducts[index].product.substring(0, 12).concat('...')
+                        ? popularProducts[index].product
+                            .substring(0, 12)
+                            .concat('...')
                         : popularProducts[index].product}{' '}
                       ({value})
                     </text>
@@ -88,8 +77,8 @@ export function PopularProductsChart() {
               >
                 {popularProducts.map((_, index) => {
                   return (
-                    <Cell 
-                      key={`cell-${index}`} 
+                    <Cell
+                      key={`cell-${index}`}
                       fill={COLORS[index]}
                       className="stroke-background hover:opacity-80"
                     />
