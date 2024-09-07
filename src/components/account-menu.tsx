@@ -1,11 +1,12 @@
-import { getManagedRestaurant } from '@/api/get-managed-restaurant'
-import { getProfile } from '@/api/get-profile'
-import { signOut } from '@/api/sign-out'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { StoreProfileDialog } from './store-profile-dialog'
 
+import { getManagedRestaurant } from '@/api/get-managed-restaurant'
+import { getProfile } from '@/api/get-profile'
+import { signOut } from '@/api/sign-out'
+
+import { StoreProfileDialog } from './store-profile-dialog'
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import {
@@ -24,20 +25,21 @@ export function AccountMenu() {
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
-    staleTime: Infinity
+    staleTime: Infinity,
   })
 
-  const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant  } = useQuery({
-    queryKey: ['managed-restaurant'],
-    queryFn: getManagedRestaurant,
-    staleTime: Infinity
-  })
+  const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant } =
+    useQuery({
+      queryKey: ['managed-restaurant'],
+      queryFn: getManagedRestaurant,
+      staleTime: Infinity,
+    })
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
       navigate('/sign-in', { replace: true })
-    }
+    },
   })
   return (
     <Dialog>
@@ -48,7 +50,7 @@ export function AccountMenu() {
             className="flex select-none items-center gap-2"
           >
             {isLoadingManagedRestaurant ? (
-              <Skeleton className='h-4 w-40'/>
+              <Skeleton className="h-4 w-40" />
             ) : (
               managedRestaurant?.name
             )}
@@ -58,19 +60,19 @@ export function AccountMenu() {
 
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="flex flex-col">
-              {isLoadingProfile ? (
-                <div className="space-y-1.5">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-3 w-24" />
-                </div>
-              ) : (
-                <>
-                  <span>{profile?.name}</span>
-                  <span className="text-xs font-normal text-muted-foreground">
+            {isLoadingProfile ? (
+              <div className="space-y-1.5">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-24" />
+              </div>
+            ) : (
+              <>
+                <span>{profile?.name}</span>
+                <span className="text-xs font-normal text-muted-foreground">
                   {profile?.email}
-                  </span>
-                </>
-              )}
+                </span>
+              </>
+            )}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
@@ -79,12 +81,12 @@ export function AccountMenu() {
               <span>Perfil da loja</span>
             </DropdownMenuItem>
           </DialogTrigger>
-          <DropdownMenuItem 
-            asChild 
-            className="text-rose-500 dark:text-rose-400" 
+          <DropdownMenuItem
+            asChild
+            className="text-rose-500 dark:text-rose-400"
             disabled={isSigningOut}
           >
-            <button className='w-full' onClick={() => signOutFn()}>
+            <button className="w-full" onClick={() => signOutFn()}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Sair</span>
             </button>
