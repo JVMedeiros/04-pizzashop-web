@@ -1,4 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, X } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,10 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { z } from 'zod'
-import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearchParams } from 'react-router-dom'
 
 const orderFiltersSchema = z.object({
   orderId: z.string().optional(),
@@ -29,31 +29,31 @@ export function OrderTableFilters() {
   const customerName = searchParams.get('customerName')
   const status = searchParams.get('status')
 
+  const { register, handleSubmit, control, reset } =
+    useForm<OrderFiltersSchema>({
+      resolver: zodResolver(orderFiltersSchema),
+      values: {
+        orderId: orderId ?? '',
+        customerName: customerName ?? '',
+        status: status ?? 'all',
+      },
+    })
 
-  const { register, handleSubmit, control, reset } = useForm<OrderFiltersSchema>({
-    resolver: zodResolver(orderFiltersSchema),
-    values: {
-      orderId: orderId ?? '',
-      customerName: customerName ?? '',
-      status: status ?? 'all',
-    }
-  })
-
-  function handleFilter({orderId, customerName, status}: OrderFiltersSchema) {
-    setSearchParams(state => {
-      if(orderId) {
+  function handleFilter({ orderId, customerName, status }: OrderFiltersSchema) {
+    setSearchParams((state) => {
+      if (orderId) {
         state.set('orderId', orderId)
       } else {
         state.delete('orderId')
       }
 
-      if(customerName) {
+      if (customerName) {
         state.set('customerName', customerName)
       } else {
         state.delete('customerName')
       }
 
-      if(status) {
+      if (status) {
         state.set('status', status)
       } else {
         state.delete('status')
@@ -78,46 +78,63 @@ export function OrderTableFilters() {
     reset({
       orderId: '',
       customerName: '',
-      status: 'all'
+      status: 'all',
     })
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFilter)} className="flex items-center gap-2">
+    <form
+      onSubmit={handleSubmit(handleFilter)}
+      className="flex items-center gap-2"
+    >
       <span className="text-sm font-semibold">Filtros:</span>
-      <Input placeholder="ID do pedido" className="h-8 w-auto" {...register('orderId')}/>
-      <Input placeholder="Nome do cliente" className="h-8 w-[320px]" {...register('customerName')}/>
-      <Controller 
-        name='status'
+      <Input
+        placeholder="ID do pedido"
+        className="h-8 w-auto"
+        {...register('orderId')}
+      />
+      <Input
+        placeholder="Nome do cliente"
+        className="h-8 w-[320px]"
+        {...register('customerName')}
+      />
+      <Controller
+        name="status"
         control={control}
-        render={({field: {name, onChange, value, disabled}}) => {
+        render={({ field: { name, onChange, value, disabled } }) => {
           return (
-            <Select 
+            <Select
               defaultValue="all"
               name={name}
               onValueChange={onChange}
               value={value}
               disabled={disabled}
             >
-            <SelectTrigger className="h-8 w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos status</SelectItem>
-              <SelectItem value="pending">Pendente</SelectItem>
-              <SelectItem value="canceled">Cancelado</SelectItem>
-              <SelectItem value="processing">Em preparo</SelectItem>
-              <SelectItem value="delivering">Em entrega</SelectItem>
-              <SelectItem value="delivered">Entregue</SelectItem>
-            </SelectContent>
-          </Select>
+              <SelectTrigger className="h-8 w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos status</SelectItem>
+                <SelectItem value="pending">Pendente</SelectItem>
+                <SelectItem value="canceled">Cancelado</SelectItem>
+                <SelectItem value="processing">Em preparo</SelectItem>
+                <SelectItem value="delivering">Em entrega</SelectItem>
+                <SelectItem value="delivered">Entregue</SelectItem>
+              </SelectContent>
+            </Select>
           )
-        }} />
+        }}
+      />
       <Button variant="secondary" size="xs" type="submit">
         <Search className="mr-2 h-4 w-4" />
         Filtrar resultados
       </Button>
-      <Button onClick={handleClearFilters} variant="outline" size="xs" type="button">
+      <Button
+        onClick={handleClearFilters}
+        variant="outline"
+        size="xs"
+        type="button"
+      >
         <X className="mr-2 h-4 w-4" />
         Remover filtros
       </Button>
