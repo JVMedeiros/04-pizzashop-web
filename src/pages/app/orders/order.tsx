@@ -1,5 +1,9 @@
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
+import { useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
 
+import { getOrders } from '@/api/get-orders'
 import { Pagination } from '@/components/pagination'
 import {
   Table,
@@ -11,10 +15,6 @@ import {
 
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
-import { useQuery } from '@tanstack/react-query'
-import { getOrders } from '@/api/get-orders'
-import { useSearchParams } from 'react-router-dom'
-import { z } from 'zod'
 
 export interface OrderProps {}
 
@@ -32,7 +32,13 @@ export function Orders() {
 
   const { data: result } = useQuery({
     queryKey: ['orders', pageIndex, orderId, customerName, status],
-    queryFn: () => getOrders({ pageIndex, orderId, customerName, status: status === 'all' ? null : status }),
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+        orderId,
+        customerName,
+        status: status === 'all' ? null : status,
+      }),
   })
 
   function handlePaginate(pageIndex: number) {
@@ -65,9 +71,10 @@ export function Orders() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {result && result.orders.map(order => {
-                  return <OrderTableRow key={order.orderId} order={order}/>
-                })}
+                {result &&
+                  result.orders.map((order) => {
+                    return <OrderTableRow key={order.orderId} order={order} />
+                  })}
               </TableBody>
             </Table>
           </div>
