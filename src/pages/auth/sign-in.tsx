@@ -1,14 +1,14 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signIn } from '@/api/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useMutation } from '@tanstack/react-query'
-import { signIn } from '@/api/sign-in'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -25,17 +25,17 @@ export function SignIn() {
     formState: { isSubmitting },
   } = useForm<SignInForm>({
     defaultValues: {
-      email: searchParams.get('email') ?? ''
-    }
+      email: searchParams.get('email') ?? '',
+    },
   })
 
   const { mutateAsync: authenticate } = useMutation({
-    mutationFn: signIn
+    mutationFn: signIn,
   })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      await authenticate({email: data.email})
+      await authenticate({ email: data.email })
 
       toast.success('Restaurante cadastrado com sucesso!', {
         action: {
@@ -43,7 +43,6 @@ export function SignIn() {
           onClick: () => handleSignIn(data),
         },
       })
-      
     } catch (error) {
       toast.error('Erro ao cadastrar restaurante.')
     }
