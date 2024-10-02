@@ -12,7 +12,8 @@ export default defineConfig({
     },
   },
   test: {
-    globals: true
+    globals: true,
+    setupFiles: ['./test/setup.ts']
   }
 } as UserConfig & {
   test: InlineConfig
