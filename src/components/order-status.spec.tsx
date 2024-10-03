@@ -16,8 +16,6 @@ describe('Order Status', () => {
     it(`should display the right text based when order status is ${order}`, () => {
       const wrapper = render(<OrderStatus status={order as OrderStatusType} />);
 
-      wrapper.debug();
-
       const statusText = wrapper.getByText(text);
       const badgeElement = wrapper.getByTestId('badge');
 
