@@ -4,6 +4,7 @@ import { getDayOrdersAmountMock } from './get-day-orders-amount-mock'
 import { getMonthCanceledOrdersAmountMock } from './get-month-canceled-orders-amount-mock'
 import { getMonthOrdersAmountMock } from './get-month-orders-amount-mock'
 import { registerRestaurantMock } from './register-restaurant-mock'
+import { getDailyRevenueInPeriodMock } from './get-daily-revenue-in-period-mock'
 import { signInMock } from './sign-in-mock'
 
 export const worker = setupWorker(
@@ -11,7 +12,8 @@ export const worker = setupWorker(
   registerRestaurantMock,
   getDayOrdersAmountMock,
   getMonthOrdersAmountMock,
-  getMonthCanceledOrdersAmountMock
+  getMonthCanceledOrdersAmountMock,
+  getDailyRevenueInPeriodMock
 )
 
 export async function enableMSW() {
